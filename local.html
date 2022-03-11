@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<title>BanG Converter - BanG Dream! 谱面转换器（本地版）</title>
+<script type="text/javascript" src="converter.js"></script>
+<script type="text/javascript" src="i18n/zh.js"></script>
+<script type="text/javascript" src="in/bangsim.js"></script>
+<script type="text/javascript" src="in/bestdori.js"></script>
+<script type="text/javascript" src="out/bangsim.js"></script>
+<script type="text/javascript" src="out/bestdori.js"></script>
+<script type="text/javascript" src="out/bms.js"></script>
+<script type="text/javascript" src="bestdori.js"></script>
+</head>
+<body>
+<a href="localen.html">English</a><br>
+<h1>BanG Converter - BanG Dream! 谱面转换器 v1.2 （本地版）</h1><hr>
+<table style="width:100%;">
+<td style="width:50%;">输入谱面：<br><textarea id="chartinput" style="width:100%;height:200px;resize:none;"></textarea><br></td>
+<td style="width:50%;">输出谱面：<a id="downloadchart" style="display:none;" download="mychart.txt">下载</a><br><textarea id="chartoutput" style="width:100%;height:200px;resize:none;" readonly="readonly"></textarea><br></td>
+</table>
+输入谱面格式：<select id="inputformat"><option value="bestdori">Bestdori!</option><option value="bestdoriv1">Bestdori! v1</option><option value="bangsim" selected>BanG! Simulator</option></select>
+输出谱面格式：<select id="outputformat"><option value="bestdori" selected>Bestdori!</option><option value="bangsim">BanG! Simulator 2</option><option value="bangsimv1">BanG! Simulator 1</option><option value="bms">官谱BMS</option><option value="bmsex">官谱BMS-Ex</option></select>
+<a href="javascript:void(convert());">开始转换</a><br>
+谱面偏移：<input id="chartoffset" type="number" min="-1e9" max="1e9" value="0" style="width:100px"> <span id="nolnspan"><input id="noln" type="checkbox"><label for="noln">在转换Bestdori!谱面时将长条转换为滑条</label><br></span>
+<hr>
+获取BanG Dream!官谱：<input id="officialid" type="number" min="1" max="2000" placeholder="谱面ID"><select id="officialdiff"><option value="easy">Easy</option><option value="normal">Normal</option><option value="hard">Hard</option><option value="expert" selected>Expert</option><option value="special">Special</option></select><a href="javascript:void(bestdoriofficial());">获取</a><br>
+获取Bestdori自制谱：<input id="communityid" type="number" min="1" max="1000000" placeholder="谱面ID"><a href="javascript:void(bestdoricommunity());">获取</a><br>
+如果要转换为其他音游的谱面，请先转换为官谱BMS并下载，然后使用<a href="https://lrfasd.github.io/rmstZ/rmstZ_20211225.html" target="_blank">rmstZ</a>转换为其他音游的谱面。rmstZ不支持方向滑键的转换。<br>
+</body>
+</html>
