@@ -4,7 +4,7 @@ Author: loader3229 (qq1010903229 in github)
 
 This program is a converter and offsetter for BanG Dream! fanmade charts.
 
-You can use this program locally with localzh.html and localen.html.
+To use this program locally, download source code and open localzh.html(Chinese) or localen.html(English).
 
 Available input formats:
 - Bestdori! (v2)
