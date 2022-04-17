@@ -5,9 +5,12 @@ var i18n={
 	detectedv1format:"检测到Bestdori! v1谱面。是否要以v1模式转换它？",
 	bsv1skillnosupport:"警告：BanG! Simulator 1不支持滑条头和滑条尾的技能键，滑条头和滑条尾的技能键将被转换为普通键",
 	bsv1dflnosupport:"BanG! Simulator 1谱面格式不支持方向滑键",
+	bbbdflnosupport:"bangbangboom谱面格式不支持方向滑键",
 	communitycharterror:"获取自制谱时出现错误",
 	officialcharterror:"获取官谱时出现错误",
 	slidedoesnotend:"警告：滑条没有结束：",
+	slidedoesnotend2:"滑条没有结束：",
+	longnotedoesnotend2:"长条没有结束",
 	unexpectedslidenote:function(b){
 		let ret="警告：意外出现的滑条";
 		let a=b.split('/')[1];

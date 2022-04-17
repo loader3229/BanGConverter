@@ -7,20 +7,22 @@
 <script type="text/javascript" src="i18n/en.js"></script>
 <script type="text/javascript" src="in/bangsim.js"></script>
 <script type="text/javascript" src="in/bestdori.js"></script>
+<script type="text/javascript" src="out/bangbangboom.js"></script>
 <script type="text/javascript" src="out/bangsim.js"></script>
 <script type="text/javascript" src="out/bestdori.js"></script>
 <script type="text/javascript" src="out/bms.js"></script>
+<script type="text/javascript" src="out/bms-hitsound.js"></script>
 <script type="text/javascript" src="bestdori.js"></script>
 </head>
 <body>
 <a href="local.html">中文</a><br>
-<h1>BanG Converter - BanG Dream! Chart Converter v1.2 (Local Version)</h1><hr>
+<h1>BanG Converter - BanG Dream! Chart Converter v1.2.1 (Local Version)</h1><hr>
 <table style="width:100%;">
 <td style="width:50%;">Input Chart:<br><textarea id="chartinput" style="width:100%;height:200px;resize:none;"></textarea><br></td>
 <td style="width:50%;">Output Chart:<a id="downloadchart" style="display:none;" download="mychart.txt">Download!</a><br><textarea id="chartoutput" style="width:100%;height:200px;resize:none;" readonly="readonly"></textarea><br></td>
 </table>
-Input Chart Format:<select id="inputformat"><option value="bestdori">Bestdori!</option><option value="bestdoriv1">Bestdori! Old Format (v1)</option><option value="bangsim" selected>BanG! Simulator</option></select>
-Output Chart Format:<select id="outputformat"><option value="bestdori" selected>Bestdori!</option><option value="bangsim">BanG! Simulator 2</option><option value="bangsimv1">BanG! Simulator 1</option><option value="bms">Official BMS</option><option value="bmsex">Official BMS Extended</option></select>
+Input Chart Format:<select id="inputformat"><option value="bestdori">Bestdori! (v2)</option><option value="bestdoriv1">Bestdori! v1</option><option value="bangsim" selected>BanG! Simulator</option></select>
+Output Chart Format:<select id="outputformat"><option value="bestdori" selected>Bestdori! (v2)</option><option value="bangbangboomv1">bangbangboom v1</option><option value="bangbangboomv1ex">bangbangboom v1-Ex</option><option value="bangsim">BanG! Simulator 2</option><option value="bangsimv1">BanG! Simulator 1</option><option value="bms">Official BMS</option><option value="bmsex">Official BMS Extended</option><option value="bms_hitsound">Hitsound BMS</option></select>
 <a href="javascript:void(convert());">Convert!</a><br>
 Chart Offset:<input id="chartoffset" type="number" min="-1e9" max="1e9" value="0" style="width:100px"> <span id="nolnspan"><input id="noln" type="checkbox"><label for="noln">When converting Bestdori! chart, don't convert slide to long note</label><br></span>
 <hr>
