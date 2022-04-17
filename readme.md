@@ -1,4 +1,4 @@
-# BanG Converter 1.2
+# BanG Converter 1.2.1
 
 Author: loader3229 (qq1010903229 in github)
 
@@ -13,7 +13,9 @@ Available input formats:
 
 Available output formats:
 - Bestdori! (v2)
+- bangbangboom v1
 - BanG! Simulator 2
 - BanG! Simulator 1
 - BMS
+- Hitsound BMS
 
