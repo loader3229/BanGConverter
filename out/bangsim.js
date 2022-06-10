@@ -77,6 +77,60 @@ chartout.bangsimv1=function(chart){
 		if(t[i].split('/')[1]=="67"){
 			throw i18n.bsv1dflnosupport;
 		}
+		if(t[i].split('/')[1]=="71"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="72"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="73"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="74"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="75"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="76"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="77"){
+			throw i18n.notripleslide;
+		}
+		result.push(t[i]);
+	}
+	var finalresult="";
+	for(var i=0;i<result.length;i++){
+		finalresult=finalresult+result[i]+"\n";
+	}
+	return finalresult.trim();
+}
+chartout.bangsimv2old=function(chart){
+	var t=chart.split('\n');
+	var result=[t[0],t[1]];
+	for(var i=2;t[i];i++){
+		if(t[i].split('/')[1]=="71"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="72"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="73"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="74"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="75"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="76"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="77"){
+			throw i18n.notripleslide;
+		}
 		result.push(t[i]);
 	}
 	var finalresult="";

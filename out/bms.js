@@ -417,6 +417,27 @@ function BanGSimToBMS(chart,extended_bms){
 				bms[lane][beat]="0H";
 			}
 		}
+		if(t[i].split('/')[1]=="71"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="72"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="73"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="74"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="75"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="76"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="77"){
+			throw i18n.notripleslide;
+		}
 	}
 	var bmsoutput=`
 *---------------------- HEADER FIELD

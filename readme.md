@@ -1,4 +1,4 @@
-# BanG Converter 1.2.1
+# BanG Converter 1.2.2
 
 Author: loader3229 (qq1010903229 in github)
 

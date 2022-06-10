@@ -70,28 +70,28 @@ chartin.bestdori=function(chart){
 			if(slides[i].connections[0].beat<=a){
 				pos=1;
 				if(slides[i].connections[0].beat<=b){
-					throw i18n.notripleslide;
+					pos=2;
 				}
 			}
 			if(pos==1){
 				b=slides[i].connections[slides[i].connections.length-1].beat;
-			}else{
+			}else if(pos==0){
 				a=slides[i].connections[slides[i].connections.length-1].beat;
 			}
 			for(var j=0;j<slides[i].connections.length;j++){
-				var type=["4","7"];
+				var type=["4","7","72"];
 				if(j==0){
-					type=["3","6"];
-					if(slides[i].connections[j].skill)type=["33","35"];
+					type=["3","6","71"];
+					if(slides[i].connections[j].skill)type=["33","35","75"];
 				}else if(j==slides[i].connections.length-1){
-					type=["5","8"];
-					if(slides[i].connections[j].flick)type=["12","13"];
-					if(slides[i].connections[j].skill)type=["34","36"];
+					type=["5","8","73"];
+					if(slides[i].connections[j].flick)type=["12","13","74"];
+					if(slides[i].connections[j].skill)type=["34","36","76"];
 				}else{
-					if(slides[i].connections[j].hidden)type=["41","42"];
+					if(slides[i].connections[j].hidden)type=["41","42","77"];
 				}
 				var lane=slides[i].connections[j].lane+1;
-				result.push(slides[i].connections[j].beat+"/"+type[pos]+"/"+lane);
+				result.push(slides[i].connections[j].beat+"/"+type[pos]+(pos==2?"/"+i:"")+"/"+lane);
 			}
 		}
 	}

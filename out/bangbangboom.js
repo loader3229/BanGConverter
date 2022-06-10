@@ -165,6 +165,27 @@ chartout.bangbangboomv1=function(chart){
 		if(t[i].split('/')[1]=="67"){
 			throw i18n.bbbdflnosupport;
 		}
+		if(t[i].split('/')[1]=="71"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="72"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="73"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="74"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="75"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="76"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="77"){
+			throw i18n.notripleslide;
+		}
 	}
 	return result;
 }
@@ -337,6 +358,27 @@ chartout.bangbangboomv1ex=function(chart){
 		}
 		if(t[i].split('/')[1]=="67"){
 			result+="\nd|7|"+((beat-offset)*24)+":"+(parseFloat(t[i].split('/')[2])-1);
+		}
+		if(t[i].split('/')[1]=="71"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="72"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="73"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="74"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="75"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="76"){
+			throw i18n.notripleslide;
+		}
+		if(t[i].split('/')[1]=="77"){
+			throw i18n.notripleslide;
 		}
 	}
 	return result;

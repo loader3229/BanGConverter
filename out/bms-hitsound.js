@@ -80,89 +80,26 @@ function BanGSimToBMSHitSound(chart,extended_bms){
 	var initialbpm=120;
 	if(parseFloat(t[1])&&t[1].split('/')[1]===undefined)initialbpm=parseFloat(t[1]);
 	for(var i=2;t[i];i++){
-		if(t[i].split('/')[1]=="1"){
+		if(t[i].split('/')[1]=="1"||t[i].split('/')[1]=="3"||t[i].split('/')[1]=="4"||t[i].split('/')[1]=="5"||t[i].split('/')[1]=="6"||t[i].split('/')[1]=="7"||t[i].split('/')[1]=="8"||t[i].split('/')[1]=="10"||t[i].split('/')[1]=="21"||t[i].split('/')[1]=="25"||t[i].split('/')[1]=="71"||t[i].split('/')[1]=="72"||t[i].split('/')[1]=="73"){
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
 			if(beat>=768000){
 				throw i18n.bmscharttoolong;
 			}
 			update("03",beat);
 		}
-		if(t[i].split('/')[1]=="2"){
+		if(t[i].split('/')[1]=="2"||t[i].split('/')[1]=="12"||t[i].split('/')[1]=="13"||t[i].split('/')[1]=="26"||t[i].split('/')[1]=="74"){
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
 			if(beat>=768000){
 				throw i18n.bmscharttoolong;
 			}
 			update("04",beat);
 		}
-		if(t[i].split('/')[1]=="3"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="4"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="5"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="6"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="7"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="8"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="10"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="11"){
+		if(t[i].split('/')[1]=="11"||t[i].split('/')[1]=="31"||t[i].split('/')[1]=="32"||t[i].split('/')[1]=="33"||t[i].split('/')[1]=="34"||t[i].split('/')[1]=="35"||t[i].split('/')[1]=="36"||t[i].split('/')[1]=="75"||t[i].split('/')[1]=="76"){
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
 			if(beat>=768000){
 				throw i18n.bmscharttoolong;
 			}
 			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="12"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("04",beat);
-		}
-		if(t[i].split('/')[1]=="13"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("04",beat);
 		}
 		if(t[i].split('/')[1]=="20"){
 			var lane="03";
@@ -190,73 +127,6 @@ function BanGSimToBMSHitSound(chart,extended_bms){
 				throw i18n.bmsdupbpm(t[i].split('/')[0]);
 			}
 			bmsspecial[lane][beat]=wav;
-		}
-		if(t[i].split('/')[1]=="21"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="25"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("03",beat);
-		}
-		if(t[i].split('/')[1]=="26"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("04",beat);
-		}
-		if(t[i].split('/')[1]=="31"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="32"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="33"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="34"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="35"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="36"){
-			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
-			if(beat>=768000){
-				throw i18n.bmscharttoolong;
-			}
-			update("05",beat);
-		}
-		if(t[i].split('/')[1]=="41"){
-		}
-		if(t[i].split('/')[1]=="42"){
 		}
 		if(t[i].split('/')[1]=="51"||t[i].split('/')[1]=="52"||t[i].split('/')[1]=="53"||t[i].split('/')[1]=="54"||t[i].split('/')[1]=="55"||t[i].split('/')[1]=="56"||t[i].split('/')[1]=="57"||t[i].split('/')[1]=="61"||t[i].split('/')[1]=="62"||t[i].split('/')[1]=="63"||t[i].split('/')[1]=="64"||t[i].split('/')[1]=="65"||t[i].split('/')[1]=="66"||t[i].split('/')[1]=="67"){
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
