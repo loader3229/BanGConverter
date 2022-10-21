@@ -2,6 +2,7 @@ chartout.bestdori=function(chart){
 	var a=0,b=0,t=chart.split('\n'),bestdori=[];
 	var bestdori_slidea=[],bestdori_slideb=[],bestdori_slideu={};
 	var bestdori_longnotes=[[],[],[],[],[],[],[],[]];
+	bestdori_longnotes[-1]=[];
 	if(parseFloat(t[1])&&t[1].split('/')[1]===undefined)bestdori.push({type:"BPM",beat:0,bpm:parseFloat(t[1])});
 	for(var i=0;t[i];i++){
 		if(t[i].split('/')[1]=="4"){

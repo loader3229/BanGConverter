@@ -28,6 +28,7 @@ function convert(){
 		var url=URL.createObjectURL(blob);
 		document.getElementById("downloadchart").href=url;
 		document.getElementById("downloadchart").style.display="initial";
+		try{window.l2de && window.l2de.startMotion('c2',0);}catch(f){}
 	}catch(e){alert(i18n.error+e);console.log(e);}
 }
 function offsetter(chart,offset){

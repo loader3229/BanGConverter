@@ -5,10 +5,11 @@ function bestdoricommunity(){
 			try{
 				var resp=JSON.parse(xhr.responseText).post.chart;
 				if(!resp || !(resp instanceof Array)){
-					alert();
+					alert(i18n.communitycharterror);
 				}else{
 					document.getElementById("chartinput").value=JSON.stringify(resp);
 					document.getElementById("inputformat").value="bestdori";
+					try{window.l2de && window.l2de.startMotion('c2',0);}catch(f){}
 				}
 			}catch(e){
 				alert(i18n.communitycharterror);
@@ -31,6 +32,7 @@ function bestdoriofficial(){
 				}else{
 					document.getElementById("chartinput").value=JSON.stringify(resp);
 					document.getElementById("inputformat").value="bestdori";
+					try{window.l2de && window.l2de.startMotion('c2',0);}catch(f){}
 				}
 			}catch(e){
 				alert(i18n.officialcharterror);
