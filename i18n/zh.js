@@ -6,6 +6,7 @@ var i18n={
 	bsv1skillnosupport:"警告：BanG! Simulator 1不支持滑条头和滑条尾的技能键，滑条头和滑条尾的技能键将被转换为普通键",
 	bsv1dflnosupport:"BanG! Simulator 1谱面格式不支持方向滑键",
 	bbbdflnosupport:"bangbangboom谱面格式不支持方向滑键",
+	bcrdflnosupport:"BanG!Craft谱面格式不支持方向滑键",
 	communitycharterror:"获取自制谱时出现错误",
 	officialcharterror:"获取官谱时出现错误",
 	slidedoesnotend:"警告：滑条没有结束：",

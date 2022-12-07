@@ -6,6 +6,7 @@ var i18n={
 	bsv1skillnosupport:"Warning: BanG! Simulator 1 format doesn't support skill notes in slides. It will convert to normal note.",
 	bsv1dflnosupport:"BanG! Simulator 1 format doesn't support Directional notes",
 	bbbdflnosupport:"bangbangboom format doesn't support Directional notes",
+	bcrdflnosupport:"BanG!Craft format doesn't support Directional notes",
 	communitycharterror:"An error occurred when getting community chart",
 	officialcharterror:"An error occurred when getting official chart",
 	slidedoesnotend:"Warning: Slide doesn't end: ",
