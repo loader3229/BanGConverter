@@ -3,7 +3,7 @@ function bestdoricommunity(){
 	xhr.onreadystatechange=(function(xhr){
 		if(xhr.readyState==4 && xhr.status == 200){
 			try{
-				var resp=JSON.parse(xhr.responseText).post.chart;
+				var resp=JSON.parse(xhr.responseText).chart;
 				if(!resp || !(resp instanceof Array)){
 					alert(i18n.communitycharterror);
 				}else{
@@ -18,7 +18,7 @@ function bestdoricommunity(){
 			alert(i18n.communitycharterror);
 		} 
 	}).bind(null,xhr);
-	xhr.open("GET","https://bestdori.reikohaku.fun/api/post/details?id="+document.getElementById("communityid").value,true);
+	xhr.open("GET","https://proxy.ayachan.fun/post/bestdori/"+document.getElementById("communityid").value+"/chart",true);
 	xhr.send();
 }
 function bestdoriofficial(){
@@ -26,7 +26,7 @@ function bestdoriofficial(){
 	xhr.onreadystatechange=(function(xhr){
 		if(xhr.readyState==4 && xhr.status == 200){
 			try{
-				var resp=JSON.parse(xhr.responseText);
+				var resp=JSON.parse(xhr.responseText).chart;
 				if(!resp || !(resp instanceof Array)){
 					alert(i18n.officialcharterror);
 				}else{
@@ -41,6 +41,6 @@ function bestdoriofficial(){
 			alert(i18n.officialcharterror);
 		} 
 	}).bind(null,xhr);
-	xhr.open("GET","https://bestdori.reikohaku.fun/api/charts/"+document.getElementById("officialid").value+"/"+document.getElementById("officialdiff").value+".json",true);
+	xhr.open("GET","https://proxy.ayachan.fun/post/bandori/"+document.getElementById("officialid").value+"/chart?diff="+document.getElementById("officialdiff").value,true);
 	xhr.send();
 }
