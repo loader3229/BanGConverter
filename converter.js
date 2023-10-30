@@ -20,7 +20,8 @@ function convert(){
 		var ch=document.getElementById("chartinput").value;
 		ch=chartin[document.getElementById("inputformat").value](ch);
 		var offset=parseFloat(document.getElementById("chartoffset").value)||0;
-		ch=offsetter(ch,offset);
+		var speed=parseFloat(document.getElementById("chartspeed").value)||1;
+		ch=offsetter(ch,offset,speed);
 		ch=chartout[document.getElementById("outputformat").value](ch);
 		document.getElementById("chartoutput").value=ch;
 		ch=ch.replaceAll(/\n/g,"\r\n");
@@ -31,12 +32,12 @@ function convert(){
 		try{window.l2de && window.l2de.startMotion('c2',0);}catch(f){}
 	}catch(e){alert(i18n.error+e);console.log(e);}
 }
-function offsetter(chart,offset){
+function offsetter(chart,offset,speed){
 	var t=chart.split('\n');
 	var result=[t[0],t[1],t[2]];
 	for(var i=3;t[i];i++){
 		t[i]=t[i].split("/");
-		var temp=(parseFloat(t[i][0])+offset).toString();
+		var temp=((parseFloat(t[i][0])+offset)/speed).toString();
 		for(var j=1;t[i][j];j++){
 			temp=temp+"/"+t[i][j];
 		}
