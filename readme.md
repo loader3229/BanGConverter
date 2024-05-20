@@ -1,6 +1,6 @@
 # BanG Converter 1.3.1
 
-Author: loader3229 (qq1010903229 in github)
+Author: loader3229
 
 This program is a converter and offsetter for BanG Dream! fanmade charts.
 
