@@ -165,26 +165,37 @@ chartout.bangbangboomv1=function(chart){
 		if(t[i].split('/')[1]=="67"){
 			throw i18n.bbbdflnosupport;
 		}
-		if(t[i].split('/')[1]=="71"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="72"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="73"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="74"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="75"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="76"){
-			throw i18n.notripleslide;
-		}
-		if(t[i].split('/')[1]=="77"){
-			throw i18n.notripleslide;
+		if(t[i].split('/')[1]=="71" || t[i].split('/')[1]=="72" || t[i].split('/')[1]=="75"){
+			var temp="|"+((beat-offset)*24)+":"+(parseFloat(t[i].split('/')[3])-1);
+			var temp2=0;
+			for(var j=i+1;t[j];j++){
+				if(t[j].split('/')[1]=="72" && t[j].split('/')[2] == t[i].split('/')[2]){
+					temp+="|"+((parseFloat(t[j].split('/')[0])-offset)*24)+":"+(parseFloat(t[j].split('/')[3])-1);
+					t[j]=" ";
+				}
+				if(t[j].split('/')[1]=="73" && t[j].split('/')[2] == t[i].split('/')[2]){
+					temp+="|"+((parseFloat(t[j].split('/')[0])-offset)*24)+":"+(parseFloat(t[j].split('/')[3])-1);
+					t[j]=" ";
+					break;
+				}
+				if(t[j].split('/')[1]=="74" && t[j].split('/')[2] == t[i].split('/')[2]){
+					temp+="|"+((parseFloat(t[j].split('/')[0])-offset)*24)+":"+(parseFloat(t[j].split('/')[3])-1);
+					t[j]=" ";
+					temp2=1;
+					break;
+				}
+				if(t[j].split('/')[1]=="76" && t[j].split('/')[2] == t[i].split('/')[2]){
+					temp+="|"+((parseFloat(t[j].split('/')[0])-offset)*24)+":"+(parseFloat(t[j].split('/')[3])-1);
+					t[j]=" ";
+					break;
+				}
+				if(t[j].split('/')[1]=="77" && t[j].split('/')[2] == t[i].split('/')[2]){
+					t[j]=" ";
+				}
+
+			}
+			if(!t[j])throw i18n.slidedoesnotend2+"Universal Slide "+t[i].split('/')[2];
+			result+="\nl|"+temp2+temp;
 		}
 	}
 	return result;
