@@ -1,4 +1,4 @@
-# BanG Converter 1.3.2
+# BanG Converter 1.4.0
 
 Author: loader3229
 
@@ -19,4 +19,5 @@ Available output formats:
 - BanG!Craft
 - BMS
 - Hitsound BMS
+- Garupa Editor
 
