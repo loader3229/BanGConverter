@@ -1,4 +1,7 @@
 chartout.bestdori=function(chart){
+	return chartout.garupa_editor(chart,true);
+}
+/*chartout.bestdori=function(chart){
 	var a=0,b=0,t=chart.split('\n'),bestdori=[];
 	var bestdori_slidea=[],bestdori_slideb=[],bestdori_slideu={};
 	var bestdori_longnotes=[[],[],[],[],[],[],[],[]];
@@ -218,4 +221,4 @@ chartout.bestdori=function(chart){
 	bestdori_slideb=[];
 	bestdori_longnotes=[[],[],[],[],[],[],[],[]];
 	return JSON.stringify(bestdori);
-}
+}*/

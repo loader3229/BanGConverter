@@ -1,4 +1,10 @@
-chartout.garupa_editor=function(chart){
+/** Convert a chart to Garupa Editor format.
+ * Link to Garupa Editor: https://github.com/WindowsSov8forUs/GarupaEditor
+ * @param {string} chart - The chart to convert.
+ * @param {boolean} [bestdori=false] - Whether to use the Bestdori! compatible format.
+ * @returns {object} - The chart in Garupa Editor format.
+ */
+chartout.garupa_editor=function(chart,bestdori=false){
     let a=0;
     let b=0;
     let tg=0;
@@ -10,14 +16,50 @@ chartout.garupa_editor=function(chart){
     let slidetg={};
     let longnotes={};
     if(parseFloat(t[1])&&t[1].split('/')[1]===undefined){
-        result.push({"type":"BPM","beat":0,"value":parseFloat(t[1])});
+		if(bestdori){
+			result.push({"type":"BPM","beat":0,"bpm":parseFloat(t[1])});
+        }else{
+			result.push({"type":"BPM","beat":0,"value":parseFloat(t[1])});
+		}
     }
-    function generateNote(type,beat,lane,width){
+    function generateNote(type,beat,lane,width,isslide=false){
+		if(bestdori){
+			let ret={"beat":beat,"lane":lane};
+			if(type=="Flick"){
+				ret.flick=true;
+			}
+			if(type=="Skill"){
+				ret.skill=true;
+			}
+			if(type=="Charge"){
+				ret.charge=true;
+			}
+			if(isslide==false){
+				ret.type="Single";
+			}
+			return ret;
+		}
         width = parseFloat(width);
         if(!Number.isFinite(width) || width<=0)return {"type":type,"beat":beat,"lane":lane};
         return {"type":type,"beat":beat,"lane":lane,"width":width};
     }
-    function generateTGNote(type,beat,lane,width){
+    function generateTGNote(type,beat,lane,width,isslide=false){
+		if(bestdori){
+			let ret={"beat":beat,"lane":lane};
+			if(type=="Flick"){
+				ret.flick=true;
+			}
+			if(type=="Skill"){
+				ret.skill=true;
+			}
+			if(type=="Charge"){
+				ret.charge=true;
+			}
+			if(isslide==false){
+				ret.type="Single";
+			}
+			return ret;
+		}
         width = parseFloat(width);
         if(!Number.isFinite(width) || width<=0)return {"type":type,"beat":beat,"lane":lane,"timingGroup":"#"+tg};
         return {"type":type,"beat":beat,"lane":lane,"width":width,"timingGroup":"#"+tg};
@@ -45,34 +87,34 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="3"){
 			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
 			a=1;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="4"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=1;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="5"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=0;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slidea});
 			slidea=[];
 		}
 		if(s[1]=="6"){
 			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
 			b=1;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="7"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=1;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="8"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=0;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slideb});
 			slideb=[];
 		}
@@ -88,14 +130,14 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="12"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=0;
-			slidea.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slidea});
 			slidea=[];
 		}
 		if(s[1]=="13"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=0;
-			slideb.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slideb});
 			slideb=[];
 		}
@@ -105,28 +147,28 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="15"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=0;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slidea});
 			slidea=[];
 		}
 		if(s[1]=="16"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=0;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slideb});
 			slideb=[];
 		}
 		if(s[1]=="17"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=0;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slidea});
 			slidea=[];
 		}
 		if(s[1]=="18"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=0;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slideb});
 			slideb=[];
 		}
@@ -138,65 +180,65 @@ chartout.garupa_editor=function(chart){
 		}
 		if(s[1]=="21"){
 			longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="25"){
 			longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
             result.push({"type":"Slide","connections":longnotes[s[2]]});
             longnotes[s[2]]=[];
 		}
 		if(s[1]=="26"){
-		longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			longnotes[s[2]]=longnotes[s[2]]||[];
+			longnotes[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
             result.push({"type":"Slide","connections":longnotes[s[2]]});
             longnotes[s[2]]=[];
 		}
 		if(s[1]=="31"){
 		longnotes[s[2]]=longnotes[s[2]]||[];
 
-			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="32"){
 		longnotes[s[2]]=longnotes[s[2]]||[];
 
-			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
             result.push({"type":"Slide","connections":longnotes[s[2]]});
             longnotes[s[2]]=[];
 		}
 		if(s[1]=="33"){
 			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
 			a=1;
-			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="34"){
 			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
 			b=1;
-			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="35"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=0;
-			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slidea});
 			slidea=[];
 		}
 		if(s[1]=="36"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=0;
-			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 			result.push({"type":"Slide","connections":slideb});
 			slideb=[];
 		}
 		if(s[1]=="37"){
 			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
 			a=1;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="38"){
 			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
 			b=1;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="40"){
 			result.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
@@ -204,12 +246,12 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="41"){
 			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
 			a=1;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="42"){
 			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
 			b=1;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
 		}
 		if(s[1]=="51"){
 			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
@@ -268,53 +310,53 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="71"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="72"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="73"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slideu[s[2]]});
 			slideu[s[2]]=[];
 		}
 		if(s[1]=="74"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slideu[s[2]]});
 			slideu[s[2]]=[];
 		}
 		if(s[1]=="75"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="76"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slideu[s[2]]});
 			slideu[s[2]]=[];
 		}
 		if(s[1]=="77"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="78"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="79"){
 			slideu[s[2]]=slideu[s[2]]||[];
 			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slideu[s[2]]});
 			slideu[s[2]]=[];
 		}
@@ -330,37 +372,37 @@ chartout.garupa_editor=function(chart){
 		if(s[1]=="103"){
 			slidetg[s[2]]=slidetg[s[2]]||[];
 			if(slidetg[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="104"){
 			slidetg[s[2]]=slidetg[s[2]]||[];
 			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="105"){
 			slidetg[s[2]]=slidetg[s[2]]||[];
 			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slidetg[s[2]],"timingGroup":"#"+tg});
 			slidetg[s[2]]=[];
 		}
 		if(s[1]=="106"){
 			slidetg[s[2]]=slidetg[s[2]]||[];
 			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slidetg[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 			result.push({"type":"Slide","connections":slidetg[s[2]],"timingGroup":"#"+tg});
 			slidetg[s[2]]=[];
 		}
 		if(s[1]=="107"){
 			slidetg[s[2]]=slidetg[s[2]]||[];
 			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4]));
+			slidetg[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
 		}
 		if(s[1]=="109"){
 			result.push(generateTGNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
 		}
 		if(s[1]=="110"){
-			result.push({"type":"SV","beat":parseFloat(s[0]),"value":parseFloat(s[2]),"timingGroup":"#"+tg});
+			if(!bestdori)result.push({"type":"SV","beat":parseFloat(s[0]),"value":parseFloat(s[2]),"timingGroup":"#"+tg});
 		}
     }
 	if(a||b)alert(i18n.slidedoesnotend+(a?'A':"")+(b?'B':""));
