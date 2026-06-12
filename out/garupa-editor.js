@@ -24,7 +24,12 @@ chartout.garupa_editor=function(chart,bestdori=false){
     }
     function generateNote(type,beat,lane,width,isslide=false){
 		if(bestdori){
-			let ret={"beat":beat,"lane":lane};
+			let ret={};
+			if(isslide==false){
+				ret.type="Single";
+			}
+			ret.beat=beat;
+			ret.lane=lane;
 			if(type=="Flick"){
 				ret.flick=true;
 			}
@@ -34,8 +39,8 @@ chartout.garupa_editor=function(chart,bestdori=false){
 			if(type=="Charge"){
 				ret.charge=true;
 			}
-			if(isslide==false){
-				ret.type="Single";
+			if(type=="Hidden"){
+				ret.hidden=true;
 			}
 			return ret;
 		}
@@ -45,7 +50,15 @@ chartout.garupa_editor=function(chart,bestdori=false){
     }
     function generateTGNote(type,beat,lane,width,isslide=false){
 		if(bestdori){
-			let ret={"beat":beat,"lane":lane};
+			let ret={};
+			if(isslide==false){
+				ret.type="Single";
+			}
+			ret.beat=beat;
+			ret.lane=lane;
+			if(isslide==false){
+				ret.type="Single";
+			}
 			if(type=="Flick"){
 				ret.flick=true;
 			}
@@ -55,8 +68,8 @@ chartout.garupa_editor=function(chart,bestdori=false){
 			if(type=="Charge"){
 				ret.charge=true;
 			}
-			if(isslide==false){
-				ret.type="Single";
+			if(type=="Hidden"){
+				ret.hidden=true;
 			}
 			return ret;
 		}
