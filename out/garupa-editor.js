@@ -23,6 +23,7 @@ chartout.garupa_editor=function(chart,bestdori=false){
 		}
     }
     function generateNote(type,beat,lane,width,isslide=false){
+        width = parseFloat(width);
 		if(bestdori){
 			let ret={};
 			if(isslide==false){
@@ -42,40 +43,18 @@ chartout.garupa_editor=function(chart,bestdori=false){
 			if(type=="Hidden"){
 				ret.hidden=true;
 			}
+			if(Number.isFinite(width) && width>0){
+				ret.width=width;
+			}
 			return ret;
 		}
-        width = parseFloat(width);
         if(!Number.isFinite(width) || width<=0)return {"type":type,"beat":beat,"lane":lane};
         return {"type":type,"beat":beat,"lane":lane,"width":width};
     }
     function generateTGNote(type,beat,lane,width,isslide=false){
-		if(bestdori){
-			let ret={};
-			if(isslide==false){
-				ret.type="Single";
-			}
-			ret.beat=beat;
-			ret.lane=lane;
-			if(isslide==false){
-				ret.type="Single";
-			}
-			if(type=="Flick"){
-				ret.flick=true;
-			}
-			if(type=="Skill"){
-				ret.skill=true;
-			}
-			if(type=="Charge"){
-				ret.charge=true;
-			}
-			if(type=="Hidden"){
-				ret.hidden=true;
-			}
-			return ret;
-		}
-        width = parseFloat(width);
-        if(!Number.isFinite(width) || width<=0)return {"type":type,"beat":beat,"lane":lane,"timingGroup":"#"+tg};
-        return {"type":type,"beat":beat,"lane":lane,"width":width,"timingGroup":"#"+tg};
+		ret = generateNote(type,beat,lane,width,isslide);
+		if(!isslide)ret.timingGroup="#"+tg;
+		return ret;
     }
     function generateDirectionalNote(num,beat,lane){
         return {"type":"Directional","direction":(num>=61?"Right":"Left"),"beat":beat,"lane":lane,"width":(num%10)};
