@@ -4,399 +4,417 @@
  * @param {boolean} [bestdori=false] - Whether to use the Bestdori! compatible format.
  * @returns {object} - The chart in Garupa Editor format.
  */
-chartout.garupa_editor=function(chart,bestdori=false){
-    let a=0;
-    let b=0;
-    let tg=0;
-    let t=chart.split('\n');
-    let result=[];
-    let slidea=[];
-    let slideb=[];
-    let slideu={};
-    let slidetg={};
-    let longnotes={};
-    if(parseFloat(t[1])&&t[1].split('/')[1]===undefined){
-		if(bestdori){
-			result.push({"type":"BPM","beat":0,"bpm":parseFloat(t[1])});
-        }else{
-			result.push({"type":"BPM","beat":0,"value":parseFloat(t[1])});
+chartout.garupa_editor = function (chart, bestdori = false) {
+	let a = 0;
+	let b = 0;
+	let tg = 0;
+	let t = chart.split('\n');
+	let result = [];
+	let slidea = [];
+	let slideb = [];
+	let slideu = {};
+	let slidetg = {};
+	let longnotes = {};
+	if (parseFloat(t[1]) && t[1].split('/')[1] === undefined) {
+		if (bestdori) {
+			result.push({ "type": "BPM", "beat": 0, "bpm": parseFloat(t[1]) });
+		} else {
+			result.push({ "type": "BPM", "beat": 0, "value": parseFloat(t[1]) });
 		}
-    }
-    function generateNote(type,beat,lane,width,isslide=false){
-        width = parseFloat(width);
-		if(bestdori){
-			let ret={};
-			if(isslide==false){
-				ret.type="Single";
+	}
+	function generateNote(type, beat, lane, width, isslide = false) {
+		width = parseFloat(width);
+		if (bestdori) {
+			let ret = {};
+			if (isslide == false) {
+				ret.type = "Single";
 			}
-			ret.beat=beat;
-			ret.lane=lane;
-			if(type=="Flick"){
-				ret.flick=true;
+			ret.beat = beat;
+			ret.lane = lane;
+			if (type == "Flick") {
+				ret.flick = true;
 			}
-			if(type=="Skill"){
-				ret.skill=true;
+			if (type == "Skill") {
+				ret.skill = true;
 			}
-			if(type=="Charge"){
-				ret.charge=true;
+			if (type == "Charge") {
+				ret.charge = true;
 			}
-			if(type=="Hidden"){
-				ret.hidden=true;
+			if (type == "Hidden") {
+				ret.hidden = true;
 			}
-			if(Number.isFinite(width) && width>0){
-				ret.width=width;
+			if (Number.isFinite(width) && width > 0) {
+				ret.width = width;
 			}
 			return ret;
 		}
-        if(!Number.isFinite(width) || width<=0)return {"type":type,"beat":beat,"lane":lane};
-        return {"type":type,"beat":beat,"lane":lane,"width":width};
-    }
-    function generateTGNote(type,beat,lane,width,isslide=false){
-		ret = generateNote(type,beat,lane,width,isslide);
-		if(!isslide)ret.timingGroup="#"+tg;
+		if (!Number.isFinite(width) || width <= 0) return { "type": type, "beat": beat, "lane": lane };
+		return { "type": type, "beat": beat, "lane": lane, "width": width };
+	}
+	function generateTGNote(type, beat, lane, width, isslide = false) {
+		ret = generateNote(type, beat, lane, width, isslide);
+		if (!isslide) ret.timingGroup = "#" + tg;
 		return ret;
-    }
-    function generateDirectionalNote(num,beat,lane){
-        return {"type":"Directional","direction":(num>=61?"Right":"Left"),"beat":beat,"lane":lane,"width":(num%10)};
-    }
-    for(let i=0;t[i];i++){
-        let s = t[i].split('/');
-		if(s[1]=="4"){
-			if(a==0)s[1]="3";
-		}
-		if(s[1]=="7"){
-			if(b==0)s[1]="6";
-		}
-		if(s[1]=="0"){
+	}
+	function generateDirectionalNote(num, beat, lane) {
+		return { "type": "Directional", "direction": (num >= 61 ? "Right" : "Left"), "beat": beat, "lane": lane, "width": (num % 10) };
+	}
+	for (let i = 0; t[i]; i++) {
+		let s = t[i].split('/');
+		if (s[1] == "0") {
 			continue;
 		}
-		if(s[1]=="1"){
-			result.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "1") {
+			result.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="2"){
-			result.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "2") {
+			result.push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="3"){
-			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
-			a=1;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "3") {
+			a = 1;
+			slidea.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="4"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=1;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "4") {
+			a = 1;
+			slidea.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="5"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=0;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slidea});
-			slidea=[];
+		if (s[1] == "5") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 0;
+			slidea.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slidea });
+			slidea = [];
 		}
-		if(s[1]=="6"){
-			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
-			b=1;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "6") {
+			b = 1;
+			slideb.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="7"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=1;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "7") {
+			b = 1;
+			slideb.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="8"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=0;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slideb});
-			slideb=[];
+		if (s[1] == "8") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 0;
+			slideb.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slideb });
+			slideb = [];
 		}
-		if(s[1]=="9"){
-            throw "Note Type Not Supported: "+t[i];
+		if (s[1] == "9") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="10"){
-			result.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "10") {
+			result.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="11"){
-			result.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "11") {
+			result.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="12"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=0;
-			slidea.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slidea});
-			slidea=[];
+		if (s[1] == "12") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 0;
+			slidea.push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slidea });
+			slidea = [];
 		}
-		if(s[1]=="13"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=0;
-			slideb.push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slideb});
-			slideb=[];
+		if (s[1] == "13") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 0;
+			slideb.push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slideb });
+			slideb = [];
 		}
-		if(s[1]=="14"){
-            throw "Note Type Not Supported: "+t[i];
+		if (s[1] == "14") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="15"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=0;
-			slidea.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slidea});
-			slidea=[];
+		if (s[1] == "15") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 0;
+			slidea.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slidea });
+			slidea = [];
 		}
-		if(s[1]=="16"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=0;
-			slideb.push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slideb});
-			slideb=[];
+		if (s[1] == "16") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 0;
+			slideb.push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slideb });
+			slideb = [];
 		}
-		if(s[1]=="17"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=0;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slidea});
-			slidea=[];
+		if (s[1] == "17") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 0;
+			slidea.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slidea });
+			slidea = [];
 		}
-		if(s[1]=="18"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=0;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slideb});
-			slideb=[];
+		if (s[1] == "18") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 0;
+			slideb.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slideb });
+			slideb = [];
 		}
-		if(s[1]=="19"){
-            throw "Note Type Not Supported: "+t[i];
+		if (s[1] == "19") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="20"){
-			result.push({"type":"BPM","beat":parseFloat(s[0]),"value":parseFloat(s[2])});
+		if (s[1] == "20") {
+			result.push({ "type": "BPM", "beat": parseFloat(s[0]), "value": parseFloat(s[2]) });
 		}
-		if(s[1]=="21"){
-			longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "21") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="25"){
-			longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-            result.push({"type":"Slide","connections":longnotes[s[2]]});
-            longnotes[s[2]]=[];
+		if (s[1] == "22") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="26"){
-			longnotes[s[2]]=longnotes[s[2]]||[];
-			longnotes[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-            result.push({"type":"Slide","connections":longnotes[s[2]]});
-            longnotes[s[2]]=[];
+		if (s[1] == "23") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="31"){
-		longnotes[s[2]]=longnotes[s[2]]||[];
-
-			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "24") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="32"){
-		longnotes[s[2]]=longnotes[s[2]]||[];
-
-			longnotes[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-            result.push({"type":"Slide","connections":longnotes[s[2]]});
-            longnotes[s[2]]=[];
+		if (s[1] == "25") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": longnotes[s[2]] });
+			longnotes[s[2]] = [];
 		}
-		if(s[1]=="33"){
-			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
-			a=1;
-			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "26") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": longnotes[s[2]] });
+			longnotes[s[2]] = [];
 		}
-		if(s[1]=="34"){
-			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
-			b=1;
-			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "27") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": longnotes[s[2]] });
+			longnotes[s[2]] = [];
 		}
-		if(s[1]=="35"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=0;
-			slidea.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slidea});
-			slidea=[];
+		if (s[1] == "28") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="36"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=0;
-			slideb.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
-			result.push({"type":"Slide","connections":slideb});
-			slideb=[];
+		if (s[1] == "29") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="37"){
-			if(a==1)alert(i18n.unexpectedslidenote(t[i]));
-			a=1;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "30") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="38"){
-			if(b==1)alert(i18n.unexpectedslidenote(t[i]));
-			b=1;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "31") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="40"){
-			result.push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "32") {
+			longnotes[s[2]] = longnotes[s[2]] || [];
+			longnotes[s[2]].push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": longnotes[s[2]] });
+			longnotes[s[2]] = [];
 		}
-		if(s[1]=="41"){
-			if(a==0)alert(i18n.unexpectedslidenote(t[i]));
-			a=1;
-			slidea.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "33") {
+			if (a == 1) alert(i18n.unexpectedslidenote(t[i]));
+			a = 1;
+			slidea.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="42"){
-			if(b==0)alert(i18n.unexpectedslidenote(t[i]));
-			b=1;
-			slideb.push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[2])-1,s[3],true));
+		if (s[1] == "34") {
+			if (b == 1) alert(i18n.unexpectedslidenote(t[i]));
+			b = 1;
+			slideb.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="51"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "35") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 0;
+			slidea.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slidea });
+			slidea = [];
 		}
-		if(s[1]=="52"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "36") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 0;
+			slideb.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+			result.push({ "type": "Slide", "connections": slideb });
+			slideb = [];
 		}
-		if(s[1]=="53"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "37") {
+			if (a == 1) alert(i18n.unexpectedslidenote(t[i]));
+			a = 1;
+			slidea.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="54"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "38") {
+			if (b == 1) alert(i18n.unexpectedslidenote(t[i]));
+			b = 1;
+			slideb.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="55"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "39") {
+			throw "Note Type Not Supported: " + t[i];
 		}
-		if(s[1]=="56"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "40") {
+			result.push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="57"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "41") {
+			if (a == 0) alert(i18n.unexpectedslidenote(t[i]));
+			a = 1;
+			slidea.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="58"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "42") {
+			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
+			b = 1;
+			slideb.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
 		}
-		if(s[1]=="59"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "51") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="61"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "52") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="62"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "53") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="63"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "54") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="64"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "55") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="65"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "56") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="66"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "57") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="67"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "58") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="68"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "59") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="69"){
-			result.push(generateDirectionalNote(parseFloat(s[1]),parseFloat(s[0]),parseFloat(s[2])-1));
+		if (s[1] == "61") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="71"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "62") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="72"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "63") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="73"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slideu[s[2]]});
-			slideu[s[2]]=[];
+		if (s[1] == "64") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="74"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slideu[s[2]]});
-			slideu[s[2]]=[];
+		if (s[1] == "65") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="75"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "66") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="76"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Skill",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slideu[s[2]]});
-			slideu[s[2]]=[];
+		if (s[1] == "67") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="77"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "68") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="78"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "69") {
+			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
 		}
-		if(s[1]=="79"){
-			slideu[s[2]]=slideu[s[2]]||[];
-			if(slideu[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slideu[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slideu[s[2]]});
-			slideu[s[2]]=[];
+		if (s[1] == "71") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length != 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
 		}
-		if(s[1]=="100"){
+		if (s[1] == "72") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+		}
+		if (s[1] == "73") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slideu[s[2]] });
+			slideu[s[2]] = [];
+		}
+		if (s[1] == "74") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slideu[s[2]] });
+			slideu[s[2]] = [];
+		}
+		if (s[1] == "75") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length != 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+		}
+		if (s[1] == "76") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Skill", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slideu[s[2]] });
+			slideu[s[2]] = [];
+		}
+		if (s[1] == "77") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+		}
+		if (s[1] == "78") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length != 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+		}
+		if (s[1] == "79") {
+			slideu[s[2]] = slideu[s[2]] || [];
+			if (slideu[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slideu[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slideu[s[2]] });
+			slideu[s[2]] = [];
+		}
+		if (s[1] == "100") {
 			tg++;
 		}
-		if(s[1]=="101"){
-			result.push(generateTGNote("Single",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "101") {
+			result.push(generateTGNote("Single", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="102"){
-			result.push(generateTGNote("Flick",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "102") {
+			result.push(generateTGNote("Flick", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="103"){
-			slidetg[s[2]]=slidetg[s[2]]||[];
-			if(slidetg[s[2]].length!=0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "103") {
+			slidetg[s[2]] = slidetg[s[2]] || [];
+			if (slidetg[s[2]].length != 0) alert(i18n.unexpectedslidenote(t[i]));
+			slidetg[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
 		}
-		if(s[1]=="104"){
-			slidetg[s[2]]=slidetg[s[2]]||[];
-			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "104") {
+			slidetg[s[2]] = slidetg[s[2]] || [];
+			if (slidetg[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slidetg[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
 		}
-		if(s[1]=="105"){
-			slidetg[s[2]]=slidetg[s[2]]||[];
-			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Single",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slidetg[s[2]],"timingGroup":"#"+tg});
-			slidetg[s[2]]=[];
+		if (s[1] == "105") {
+			slidetg[s[2]] = slidetg[s[2]] || [];
+			if (slidetg[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slidetg[s[2]].push(generateNote("Single", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slidetg[s[2]], "timingGroup": "#" + tg });
+			slidetg[s[2]] = [];
 		}
-		if(s[1]=="106"){
-			slidetg[s[2]]=slidetg[s[2]]||[];
-			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Flick",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
-			result.push({"type":"Slide","connections":slidetg[s[2]],"timingGroup":"#"+tg});
-			slidetg[s[2]]=[];
+		if (s[1] == "106") {
+			slidetg[s[2]] = slidetg[s[2]] || [];
+			if (slidetg[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slidetg[s[2]].push(generateNote("Flick", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
+			result.push({ "type": "Slide", "connections": slidetg[s[2]], "timingGroup": "#" + tg });
+			slidetg[s[2]] = [];
 		}
-		if(s[1]=="107"){
-			slidetg[s[2]]=slidetg[s[2]]||[];
-			if(slidetg[s[2]].length==0)alert(i18n.unexpectedslidenote(t[i]));
-			slidetg[s[2]].push(generateNote("Hidden",parseFloat(s[0]),parseFloat(s[3])-1,s[4],true));
+		if (s[1] == "107") {
+			slidetg[s[2]] = slidetg[s[2]] || [];
+			if (slidetg[s[2]].length == 0) alert(i18n.unexpectedslidenote(t[i]));
+			slidetg[s[2]].push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[3]) - 1, s[4], true));
 		}
-		if(s[1]=="109"){
-			result.push(generateTGNote("Skill",parseFloat(s[0]),parseFloat(s[2])-1,s[3]));
+		if (s[1] == "109") {
+			result.push(generateTGNote("Skill", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3]));
 		}
-		if(s[1]=="110"){
-			if(!bestdori)result.push({"type":"SV","beat":parseFloat(s[0]),"value":parseFloat(s[2]),"timingGroup":"#"+tg});
+		if (s[1] == "110") {
+			if (!bestdori) result.push({ "type": "SV", "beat": parseFloat(s[0]), "value": parseFloat(s[2]), "timingGroup": "#" + tg });
 		}
-    }
-	if(a||b)alert(i18n.slidedoesnotend+(a?'A':"")+(b?'B':""));
+	}
+	if (a || b) alert(i18n.slidedoesnotend + (a ? 'A' : "") + (b ? 'B' : ""));
 	return JSON.stringify(result);
 }
