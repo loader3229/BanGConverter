@@ -24,7 +24,13 @@ chartout.garupa_editor = function (chart, bestdori = false) {
 	}
 	function generateNote(type, beat, lane, width, isslide = false) {
 		width = parseFloat(width);
+		if (type == "System") {
+			return { "type": type, "beat": beat, "data": lane };
+		}
 		if (bestdori) {
+			if (type == "BPM") {
+				return { "type": type, "beat": beat, "bpm": lane };
+			}
 			let ret = {};
 			if (isslide == false) {
 				ret.type = "Single";
@@ -47,6 +53,9 @@ chartout.garupa_editor = function (chart, bestdori = false) {
 				ret.width = width;
 			}
 			return ret;
+		}
+		if (type == "BPM") {
+			return { "type": type, "beat": beat, "value": lane };
 		}
 		if (!Number.isFinite(width) || width <= 0) return { "type": type, "beat": beat, "lane": lane };
 		return { "type": type, "beat": beat, "lane": lane, "width": width };
@@ -158,7 +167,7 @@ chartout.garupa_editor = function (chart, bestdori = false) {
 			throw "Note Type Not Supported: " + t[i];
 		}
 		if (s[1] == "20") {
-			result.push({ "type": "BPM", "beat": parseFloat(s[0]), "value": parseFloat(s[2]) });
+			result.push(generateNote("BPM", parseFloat(s[0]), parseFloat(s[2])));
 		}
 		if (s[1] == "21") {
 			longnotes[s[2]] = longnotes[s[2]] || [];
@@ -262,6 +271,18 @@ chartout.garupa_editor = function (chart, bestdori = false) {
 			if (b == 0) alert(i18n.unexpectedslidenote(t[i]));
 			b = 1;
 			slideb.push(generateNote("Hidden", parseFloat(s[0]), parseFloat(s[2]) - 1, s[3], true));
+		}
+		if (s[1] == "45") {
+			result.push(generateNote("System", parseFloat(s[0]), "cmd_fever_ready.wav"));
+		}
+		if (s[1] == "46") {
+			result.push(generateNote("System", parseFloat(s[0]), "cmd_fever_start.wav"));
+		}
+		if (s[1] == "47") {
+			result.push(generateNote("System", parseFloat(s[0]), "cmd_fever_end.wav"));
+		}
+		if (s[1] == "48") {
+			result.push(generateNote("System", parseFloat(s[0]), "cmd_fever_checkpoint.wav"));
 		}
 		if (s[1] == "51") {
 			result.push(generateDirectionalNote(parseFloat(s[1]), parseFloat(s[0]), parseFloat(s[2]) - 1));
