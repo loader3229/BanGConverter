@@ -52,7 +52,7 @@ chartin.bms=function(chart){
                         if(lanestring == "01"){
                             result1.push({
                                 "beat": (measure+j/notestring.length)*4,
-                                "wav": wav[note],
+                                "wav": wav[note] || "bd.wav",
                                 "type": "special"
                             })
                             continue;
@@ -92,7 +92,7 @@ chartin.bms=function(chart){
                         }
                         result1.push({
                             "beat": (measure+j/notestring.length)*4,
-                            "wav": wav[note],
+                            "wav": wav[note] || "bd.wav",
                             "type": type,
                             "lane": baselane
                         })
