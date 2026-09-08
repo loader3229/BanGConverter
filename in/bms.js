@@ -294,6 +294,10 @@ chartin.bms=function(chart){
             result.push(i.beat+"/12/"+i.lane);
             continue;
         }
+        if(i.wav == "slide_end_flick_a.wav"){
+            result.push(i.beat+"/12/"+i.lane);
+            continue;
+        }
         if(i.wav == "slide_b.wav"){
             result.push(i.beat+"/7/"+i.lane);
             continue;
@@ -303,6 +307,10 @@ chartin.bms=function(chart){
             continue;
         }
         if(i.wav == "slide_end_b_flick.wav"){
+            result.push(i.beat+"/13/"+i.lane);
+            continue;
+        }
+        if(i.wav == "slide_end_flick_b.wav"){
             result.push(i.beat+"/13/"+i.lane);
             continue;
         }
