@@ -386,6 +386,14 @@ chartin.bms=function(chart){
             result.push(i.beat+"/34/"+i.lane);
             continue;
         }
+        if(i.wav == "skill_slide_a.wav"){
+            result.push(i.beat+"/33/"+i.lane);
+            continue;
+        }
+        if(i.wav == "skill_slide_b.wav"){
+            result.push(i.beat+"/34/"+i.lane);
+            continue;
+        }
         if(i.wav == "slide_end_a_skill.wav"){
             result.push(i.beat+"/35/"+i.lane);
             continue;

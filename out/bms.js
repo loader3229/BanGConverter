@@ -219,7 +219,7 @@ function BanGSimToBMS(chart,extended_bms){
 			}
 			var bpm=parseFloat(t[i].split('/')[2]);
 			var wav="";
-			if(bpm==Math.floor(bpm) && bpm<=255){
+			if(bpm==Math.floor(bpm) && bpm<=255 && bpm>=1){
 				wav=getBmsBpmIndex(bpm);
 			}else{
 				lane="08";
@@ -294,7 +294,6 @@ function BanGSimToBMS(chart,extended_bms){
 			bms[lane][beat]="05";
 		}
 		if(t[i].split('/')[1]=="33"){
-			if(!extended_bms)alert(i18n.bmsskillnosupport);
 			var lane="1"+lanenumbers[Math.round(parseFloat(t[i].split('/')[2])-1)];
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
 			if(beat>=768000){
@@ -303,7 +302,7 @@ function BanGSimToBMS(chart,extended_bms){
 			if(bms[lane][beat]){
 				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
 			}
-			bms[lane][beat]=(extended_bms?"0I":"06");
+			bms[lane][beat]="0I";
 		}
 		if(t[i].split('/')[1]=="34"){
 			if(!extended_bms)alert(i18n.bmsskillnosupport);
@@ -318,7 +317,6 @@ function BanGSimToBMS(chart,extended_bms){
 			bms[lane][beat]=(extended_bms?"0J":"07");
 		}
 		if(t[i].split('/')[1]=="35"){
-			if(!extended_bms)alert(i18n.bmsskillnosupport);
 			var lane="1"+lanenumbers[Math.round(parseFloat(t[i].split('/')[2])-1)];
 			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
 			if(beat>=768000){
@@ -327,7 +325,7 @@ function BanGSimToBMS(chart,extended_bms){
 			if(bms[lane][beat]){
 				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
 			}
-			bms[lane][beat]=(extended_bms?"0K":"09");
+			bms[lane][beat]="0K";
 		}
 		if(t[i].split('/')[1]=="36"){
 			if(!extended_bms)alert(i18n.bmsskillnosupport);
@@ -378,6 +376,50 @@ function BanGSimToBMS(chart,extended_bms){
 				throw i18n.bmsdupnote((reallane+1),t[i].split('/')[0])
 			}
 			bms[reallane][beat]=wavnewspb[lane+50];
+		}
+		if(t[i].split('/')[1]=="45"){
+			var lane="01";
+			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
+			if(beat>=768000){
+				throw i18n.bmscharttoolong;
+			}
+			if(bms[lane][beat]){
+				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
+			}
+			bms[lane][beat]="0C";
+		}
+		if(t[i].split('/')[1]=="46"){
+			var lane="01";
+			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
+			if(beat>=768000){
+				throw i18n.bmscharttoolong;
+			}
+			if(bms[lane][beat]){
+				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
+			}
+			bms[lane][beat]="0D";
+		}
+		if(t[i].split('/')[1]=="47"){
+			var lane="01";
+			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
+			if(beat>=768000){
+				throw i18n.bmscharttoolong;
+			}
+			if(bms[lane][beat]){
+				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
+			}
+			bms[lane][beat]="0E";
+		}
+		if(t[i].split('/')[1]=="48"){
+			var lane="01";
+			var beat=Math.round(parseFloat(t[i].split('/')[0])*192);
+			if(beat>=768000){
+				throw i18n.bmscharttoolong;
+			}
+			if(bms[lane][beat]){
+				throw i18n.bmsdupnote(Math.round(parseFloat(t[i].split('/')[2])),t[i].split('/')[0])
+			}
+			bms[lane][beat]="0M";
 		}
 		if(t[i].split('/')[1]=="51"||t[i].split('/')[1]=="52"||t[i].split('/')[1]=="53"||t[i].split('/')[1]=="54"||t[i].split('/')[1]=="55"||t[i].split('/')[1]=="56"||t[i].split('/')[1]=="57"){
 			newsp=true;
@@ -471,11 +513,16 @@ function BanGSimToBMS(chart,extended_bms){
 	if(newsp)bmsoutput+=`
 #WAV0G directional_fl_l.wav
 #WAV0H directional_fl_r.wav`;
+	bmsoutput += `
+#WAV0I slide_a_skill.wav`;
 	if(extended_bms)bmsoutput+=`
-#WAV0I slide_a_skill.wav
-#WAV0J slide_end_a_skill.wav
-#WAV0K slide_b_skill.wav
+#WAV0J slide_end_a_skill.wav`;
+	bmsoutput += `
+#WAV0K slide_b_skill.wav`;
+	if(extended_bms)bmsoutput+=`
 #WAV0L slide_end_b_skill.wav`;
+	bmsoutput += `
+#WAV0M cmd_fever_checkpoint.wav`;
 	if(newsp){
 		for(var i=1;i<=50;i++){
 			bmsoutput+="\n#WAV"+wavnewspa[50+i]+" slide_a_RS"+(Math.floor(i/10)%10)+(i%10)+".wav";
